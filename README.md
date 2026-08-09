@@ -186,6 +186,3 @@ It demonstrates how multiple basic Python concepts can be combined to create a f
 
 Mayur Shirodkar
 
-📜 License
-
-This project is intended for educational and learning purposes.
