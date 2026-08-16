@@ -1,188 +1,123 @@
 # encrypt-decrypt-
-🔐 Python Encryption & Decryption Tool
 
-A simple Python-based encryption and decryption program that converts text into a randomly generated sequence of symbols and stores the encrypted/decrypted pairs temporarily while the program is running.
+🔐 Simple Python Encryption & Decryption (educational)
 
-This project was created as a beginner-friendly Python project to practice functions, lists, dictionaries, loops, conditionals, user input, randomness, and basic data storage.
+This is a beginner-friendly command-line program that "encrypts" text by replacing each character with a randomly selected symbol and stores the mapping so the program can decrypt it later. This project is for learning and experimentation only — it is not secure for protecting real secrets.
 
-⚠️ Note: This is an educational project and is not a secure encryption system for protecting real passwords or sensitive information.
+---
 
-✨ Features
-🔒 Encrypt text using randomly selected symbols
-🔓 Decrypt previously encrypted text
-🎲 Random symbol generation
-💾 Temporarily stores encrypted/decrypted pairs
-⏳ Loading-style effect during encryption/decryption
-🖥️ Simple command-line interface
-🚪 Option to quit the program
-🛠️ Technologies Used
-Python 3
-random — for randomly selecting encryption symbols
-time — for creating the loading effect
+## What changed (updated to match the code)
+- Persistently stores encryption pairs in `Data/data.json` (created automatically if missing).
+- Added a "Clear data" option to wipe stored pairs.
+- The CLI menu has 4 options: Encrypt, Decrypt, Clear data, Quit.
+- Uses a custom time-based random implementation located at `Main/MyRandom/ranT1.py`.
+- Minor user-facing formatting: encryption output prints with square brackets for display, but the stored key is the raw generated string (without the display brackets).
 
-No external libraries are required.
+---
 
-📂 How It Works
-1. Encryption
+## Features
+- Encrypt an input string into a randomly generated symbol sequence.
+- Decrypt previously generated encrypted strings (must match stored encrypted string exactly).
+- Save and load encrypted ↔ original mappings from `Data/data.json`.
+- Loading-style animation during encryption/decryption.
+- Lightweight: no external dependencies (Python 3 standard library only).
 
-When you choose Encrypt, the program:
+---
 
-Takes your input text.
-Generates a random symbol for each character.
-Creates an encrypted string.
-Stores the encrypted string together with the original text.
-Displays the encrypted result.
+## How it works (high level)
+1. Encryption:
+   - For each character in the input, the program picks a symbol from a symbol list using `MyRandom.ranT1.random.choice`.
+   - The program joins chosen symbols into an encrypted string (this string is stored as the key and the original text as the value in `Data/data.json`).
+   - The encrypted string is shown to the user (displayed inside square brackets for readability).
 
-Example:
+2. Decryption:
+   - You enter the encrypted string (exactly as the stored key — do not include the display brackets/spaces).
+   - The program looks up the encrypted string in `Data/data.json` and prints the original text if found.
 
-Enter your choice: 1
+---
 
-Enter ur statement to encrypt: hello
-
-your encrypted string is: [  @#×!$  ]
-
-The encrypted text is then stored temporarily in the program.
-
-2. Decryption
-
-When you choose Decrypt, you enter the encrypted string.
-
-The program searches through the stored encryption pairs and checks whether the encrypted string exists.
-
-If it finds a match, it displays the original text.
-
-Example:
-
-Enter your choice: 2
-
-Enter ur statement to decrypt: @#×!$
-
-your decrypted string is: hello
-📋 Menu
-
-The program provides three options:
-
+## CLI Menu
+When you run the program, you will see:
+```
 **********************
 Welcome to Encrypting
 **********************
 1. Encrypt
 2. Decrypt
-3. Quit
-Option 1 — Encrypt 🔒
+3. clear data
+4. Quit
+```
 
-Enter a statement and receive a randomly generated encrypted string.
+- Option 1 — Encrypt: enter a statement to encrypt and save the pair.
+- Option 2 — Decrypt: enter an encrypted string (the stored key) to recover the original text.
+- Option 3 — Clear data: removes all mappings from `Data/data.json`.
+- Option 4 — Quit: exit the program.
 
-Option 2 — Decrypt 🔓
+---
 
-Enter an encrypted string that was generated earlier to recover the original text.
+## Example session
+1) Encrypt:
+- Input: hello
+- Output shown: your encrypted string is: [  @#×!$  ]
+- Stored mapping: `{"@#×!$": "hello"}` inside `Data/data.json`
 
-Option 3 — Quit 🚪
+2) Decrypt:
+- Input (exact stored key): @#×!$
+- Output: your decrypted string is: hello
 
-Stops the program.
+Note: the printed display includes brackets and spacing for readability; when decrypting, enter the raw encrypted string (without the visible brackets/spaces).
 
-💾 Data Storage
+---
 
-Currently, the program stores encryption pairs inside a Python list:
+## Files & structure
+- Main/main.py — main program and CLI
+- Main/MyRandom/ranT1.py — custom random.choice implementation
+- Data/data.json — persistent storage (created automatically)
+- README.md — this file
 
-store = []
+---
 
-Each encryption is stored as a dictionary:
+## How to run
+1. Ensure Python 3 is installed:
+   python --version
 
+2. Run the script from the repository root:
+   python Main/main.py
+
+---
+
+## Data format
+Data is stored as a JSON object mapping encrypted strings to original text:
+```json
 {
-    encrypted_text: original_text
+  "encrypted_string_here": "original text here",
+  "@#×!$": "hello"
 }
+```
 
-For example:
+---
 
-{
-    "@#×!$": "hello"
-}
-Important
+## Known issues & suggestions
+- Security: This is NOT cryptographically secure. Do not use it for real passwords or sensitive information.
+- Bug risk: In the code, when the input length is larger than the symbol list, integers (0–9) are appended to the symbol list as Python ints. That can cause TypeError when the program tries to join mixed-type elements into the final string. Suggested fixes:
+  - Append string digits instead (e.g., `symbols.extend(list("0123456789"))`) or expand the symbol set with only string elements.
+  - Prefer using Python's built-in `random.choice` from the `random` module (and remove the custom time-based random) for more consistent behavior.
+- Decrypt input: The program prints the encrypted string with square brackets and spaces for readability; users must input the raw stored key (without brackets/spaces) to decrypt.
+- Duplicate checking: The code checks whether the original text already exists in saved values before encrypting; this prevents duplicate originals but does not prevent duplicate encrypted outputs (very unlikely but possible).
+- Improvements you might consider:
+  - Use built-in `random` or `secrets` for randomness.
+  - Always use strings in the symbols list.
+  - Add unit tests, better error handling, and option to remove individual entries.
+  - Optionally add password protection or adopt real encryption (AES) for secure use-cases.
 
-The stored data exists only while the Python program is running.
+---
 
-If you close the program, the stored encryption pairs are lost.
+## Contributing
+This repository is a learning project. Contributions are welcome — consider opening issues or pull requests for bug fixes (especially the int-vs-str bug) and small improvements.
 
-▶️ How to Run
-1. Install Python
+---
 
-Make sure Python 3 is installed on your computer.
+## License & Author
+Author: Mayur Shirodkar
 
-You can check using:
-
-python --version
-2. Clone the repository
-git clone YOUR_REPOSITORY_URL
-3. Open the project folder
-cd YOUR_REPOSITORY_FOLDER
-4. Run the program
-python main.py
-📁 Project Structure
-Encryption-Project/
-│
-├── main.py
-└── README.md
-🧠 Python Concepts Practiced
-
-This project helped practice:
-
-Functions
-if / elif / else
-while loops
-for loops
-Lists
-Dictionaries
-Strings
-input()
-Type conversion
-random.choice()
-time.sleep()
-.append()
-.join()
-.isdigit()
-len()
-Basic program flow
-⚠️ Limitations
-
-This project is mainly for learning Python and has some limitations:
-
-Encryption pairs are stored only in memory.
-Closing the program deletes the stored data.
-The encryption method is not cryptographically secure.
-Random symbols can potentially repeat.
-The program currently does not use modern encryption algorithms such as AES or RSA.
-Decryption only works for encrypted strings stored during the current session.
-🚀 Future Improvements
-
-Possible improvements for future versions:
-
-Save encrypted data to a file
-
-Add permanent storage using JSON
-
-Improve the encryption algorithm
-
-Add password protection
-
-Add a GUI
-
-Add error handling
-
-Allow users to manage multiple encrypted messages
-
-Add secure encryption algorithms
-
-Improve the loading animation
-
-Add timestamps for stored messages
-
-🎯 Purpose
-
-The main purpose of this project is to learn and practice Python programming by building something interactive rather than just writing individual practice programs.
-
-It demonstrates how multiple basic Python concepts can be combined to create a functional command-line application.
-
-👨‍💻 Author
-
-Mayur Shirodkar
-
+This project is intended for learning; no license file is included in the repository. Add a LICENSE to clarify reuse terms if needed.
