@@ -5,12 +5,12 @@
 This is a beginner-friendly command-line program that "encrypts" text by replacing each character with a randomly selected symbol and stores the mapping so the program can decrypt it later. This proje[...] 
 
 ---
-Reworked the QSS (Qt Style Sheets) styling with:
-✅ A gold/amber gradient theme for a more premium feel
-✅ Proper hover, pressed, and disabled states on buttons (not just flat colors)
-✅ Focus states on input fields for better UX feedback
-✅ Custom-styled scrollbars and tooltips to keep things consistent
-✅ Subtle depth using layered rgba backgrounds instead of flat transparency
+## Reworked the QSS (Qt Style Sheets) styling with:
+-✅ A gold/amber gradient theme for a more premium feel.
+-✅ Proper hover, pressed, and disabled states on buttons (not just flat colors).
+-✅ Focus states on input fields for better UX feedback.
+-✅ Custom-styled scrollbars and tooltips to keep things consistent.
+-✅ Subtle depth using layered rgba backgrounds instead of flat transparency.
 
 ## What changed (updated to match the code)
 - Persistently stores encryption pairs in `Data/data.json` (created automatically if missing).
