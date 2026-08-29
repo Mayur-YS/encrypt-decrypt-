@@ -2,11 +2,12 @@
 
 🔐 Simple Python Encryption & Decryption (educational)
 
-This is a beginner-friendly command-line program that "encrypts" text by replacing each character with a randomly selected symbol and stores the mapping so the program can decrypt it later. This project is for learning and experimentation only — it is not secure for protecting real secrets.
+This is a beginner-friendly command-line program that "encrypts" text by replacing each character with a randomly selected symbol and stores the mapping so the program can decrypt it later. This proje[...] 
 
 ---
 
 ## What changed (updated to match the code)
+- Added a PyQt5 GUI in `Main/main.py` (replaces the previous CLI interface) and applied object-name based CSS styling inside `Main/main.py`.
 - Persistently stores encryption pairs in `Data/data.json` (created automatically if missing).
 - Added a "Clear data" option to wipe stored pairs.
 - The CLI menu has 4 options: Encrypt, Decrypt, Clear data, Quit.
@@ -70,7 +71,7 @@ Note: the printed display includes brackets and spacing for readability; when de
 ---
 
 ## Files & structure
-- Main/main.py — main program and CLI
+- Main/main.py — main GUI application (PyQt5) and the UI styling (object-name based stylesheet).
 - Main/MyRandom/ranT1.py — custom random.choice implementation
 - Data/data.json — persistent storage (created automatically)
 - README.md — this file
@@ -81,7 +82,10 @@ Note: the printed display includes brackets and spacing for readability; when de
 1. Ensure Python 3 is installed:
    python --version
 
-2. Run the script from the repository root:
+2. Install PyQt5 if you are using the GUI build (required for `Main/main.py`):
+   python -m pip install PyQt5
+
+3. Run the script from the repository root:
    python Main/main.py
 
 ---
@@ -99,11 +103,11 @@ Data is stored as a JSON object mapping encrypted strings to original text:
 
 ## Known issues & suggestions
 - Security: This is NOT cryptographically secure. Do not use it for real passwords or sensitive information.
-- Bug risk: In the code, when the input length is larger than the symbol list, integers (0–9) are appended to the symbol list as Python ints. That can cause TypeError when the program tries to join mixed-type elements into the final string. Suggested fixes:
+- Bug risk: In the code, when the input length is larger than the symbol list, integers (0–9) are appended to the symbol list as Python ints. That can cause TypeError when the program tries to [...]
   - Append string digits instead (e.g., `symbols.extend(list("0123456789"))`) or expand the symbol set with only string elements.
   - Prefer using Python's built-in `random.choice` from the `random` module (and remove the custom time-based random) for more consistent behavior.
 - Decrypt input: The program prints the encrypted string with square brackets and spaces for readability; users must input the raw stored key (without brackets/spaces) to decrypt.
-- Duplicate checking: The code checks whether the original text already exists in saved values before encrypting; this prevents duplicate originals but does not prevent duplicate encrypted outputs (very unlikely but possible).
+- Duplicate checking: The code checks whether the original text already exists in saved values before encrypting; this prevents duplicate originals but does not prevent duplicate encrypted output[...] 
 - Improvements you might consider:
   - Use built-in `random` or `secrets` for randomness.
   - Always use strings in the symbols list.
